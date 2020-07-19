@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Alert, Button, Card, Col, Row, Spinner } from 'react-bootstrap';
 import Moment from 'react-moment';
@@ -10,6 +10,7 @@ const Tournaments = () => {
   const tournaments = useStoreState((state) => state.tournament.tournaments);
   const loading = useStoreState((state) => state.tournament.loading);
   const errors = useStoreState((state) => state.tournament.errors);
+  const customError = useStoreState((state) => state.tournament.customError);
   const loggedUser = useStoreState((state) => state.auth.user);
   const registeredTournaments = useStoreState(
     (state) => state.tournament.registeredTournaments
@@ -20,6 +21,9 @@ const Tournaments = () => {
     (actions) => actions.tournament.fetchAllTournaments
   );
   const setError = useStoreActions((actions) => actions.tournament.setErrors);
+  const leaveTournament = useStoreActions(
+    (actions) => actions.tournament.leaveTournament
+  );
 
   //
   useEffect(() => {
@@ -56,13 +60,18 @@ const Tournaments = () => {
                   </Alert>
                 ))}
             </Col>
+            <Col xs={12}>
+              {customError.msg.length > 0 && (
+                <Alert variant={customError.type} className='text-center'>
+                  {customError.msg}
+                </Alert>
+              )}
+            </Col>
           </Row>
           <Row className='text-center'>
             {tournaments.map((tournament) => (
               <Col md={4} xs={12} className='mb-3' key={tournament._id}>
-                <Card
-                // border={tournament.isActive ? '' : 'danger'}
-                >
+                <Card>
                   <Card.Header as='h5'>{tournament.name}</Card.Header>
                   <Card.Body>
                     <Card.Title>
@@ -88,7 +97,17 @@ const Tournaments = () => {
                               </span>{' '}
                               takımı kayıtlı
                             </p>
-                            <Button variant='danger'>Kayıt Sil</Button>
+                            <Button
+                              variant='danger'
+                              onClick={() => {
+                                leaveTournament({
+                                  tournamentId: tournamentt.tournamentId,
+                                  teamId: tournamentt.teamId,
+                                });
+                              }}
+                            >
+                              Kayıt Sil
+                            </Button>
                           </>
                         )
                     )}

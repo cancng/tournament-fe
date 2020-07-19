@@ -9,6 +9,7 @@ const tournamentModel = {
   errors: [],
   selectedTournament: {},
   registeredTournaments: [],
+  customError: { type: '', msg: '' },
 
   // actions
   fetching: action((state) => {
@@ -19,6 +20,9 @@ const tournamentModel = {
   }),
   setErrors: action((state, payload) => {
     state.errors = payload;
+  }),
+  setCustomError: action((state, payload) => {
+    state.customError = payload;
   }),
   addItems: action((state, payload) => {
     state.tournaments = payload;
@@ -61,6 +65,7 @@ const tournamentModel = {
       const result = await api.get('/tournament/list');
       actions.addItems(result.data);
       actions.fetchRegisteredTournaments(payload);
+      // actions.setCustomError({ type: '', msg: '' });
       actions.fetchingDone();
     } catch (e) {
       const errors = e.response.data.errors;
@@ -121,6 +126,30 @@ const tournamentModel = {
       const body = { team_name, team_players };
       await api.post(`/tournament/join/${payload.tournamentId}`, body);
       actions.setErrors([]);
+      actions.setCustomError({
+        type: 'success',
+        msg: 'Turnuva kaydınız başarıyla tamamlandı',
+      });
+      actions.fetchAllTournaments();
+      actions.fetchingDone();
+    } catch (e) {
+      const errors = e.response.data.errors;
+      if (errors) {
+        actions.setErrors(errors);
+        actions.fetchingDone();
+      }
+    }
+  }),
+  leaveTournament: thunk(async (actions, payload) => {
+    actions.fetching();
+    try {
+      const { tournamentId, teamId } = payload;
+      await api.delete(`/tournament/left_team/${tournamentId}/${teamId}`);
+      actions.setCustomError({
+        type: 'success',
+        msg: 'Turnuvadan çekildiniz, isterseniz tekrar kayıt olabilirsiniz',
+      });
+      actions.fetchAllTournaments();
       actions.fetchingDone();
     } catch (e) {
       const errors = e.response.data.errors;
