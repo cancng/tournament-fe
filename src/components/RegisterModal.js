@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Modal, Form, InputGroup } from 'react-bootstrap';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
-const RegisterModal = ({ tournament, isRegistered }) => {
+const RegisterModal = ({ tournament }) => {
   const [inputs, setInputs] = useState({ team_name: '', team_players: '' });
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -11,6 +11,9 @@ const RegisterModal = ({ tournament, isRegistered }) => {
   // Redux Store States
   // const loading = useStoreState((state) => state.tournament.loading);
   // const errors = useStoreState((state) => state.tournament.errors);
+  const registeredTournaments = useStoreState(
+    (state) => state.tournament.registeredTournaments
+  );
 
   // Redux Store Actions
   const registerTournament = useStoreActions(
@@ -19,6 +22,11 @@ const RegisterModal = ({ tournament, isRegistered }) => {
   // const setError = useStoreActions((actions) => actions.tournament.setErrors);
 
   //
+  const checker = (tournamentId) => {
+   const found= registeredTournaments.find(trnmt => trnmt.tournamentId === tournament._id)
+    return !!found;
+  }
+
   const handleChange = (e) => {
     setInputs({
       ...inputs,
@@ -33,7 +41,7 @@ const RegisterModal = ({ tournament, isRegistered }) => {
       team_players: inputs.team_players,
     });
   };
-  console.log(isRegistered);
+  // console.log(isRegistered);
 
   return (
     <>
@@ -47,10 +55,10 @@ const RegisterModal = ({ tournament, isRegistered }) => {
       ) : (
         <Button
           variant='success'
-          disabled={isRegistered.registered}
+          disabled={checker(tournament._id)}
           onClick={handleShow}
         >
-          Takımını Kaydet
+          Takımını Kaydet 
         </Button>
       )}
 

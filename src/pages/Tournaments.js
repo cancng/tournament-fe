@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { Alert, Card, Col, Row, Spinner } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Row, Spinner } from 'react-bootstrap';
 import Moment from 'react-moment';
 import moment from 'moment';
 import RegisterModal from '../components/RegisterModal';
 
 const Tournaments = () => {
-  const [regTeam, setRegTeam] = useState({
-    name: '',
-    registered: false,
-    tournamentId: '',
-  });
-
   // Redux store states
   const tournaments = useStoreState((state) => state.tournament.tournaments);
   const loading = useStoreState((state) => state.tournament.loading);
   const errors = useStoreState((state) => state.tournament.errors);
   const loggedUser = useStoreState((state) => state.auth.user);
+  const registeredTournaments = useStoreState(
+    (state) => state.tournament.registeredTournaments
+  );
 
   // Redux store actions
   const fetchAll = useStoreActions(
@@ -26,27 +23,8 @@ const Tournaments = () => {
 
   //
   useEffect(() => {
-    fetchAll();
+    fetchAll(loggedUser._id);
     setError([]);
-  }, []);
-
-  useEffect(() => {
-    // const isRegistered =
-    //   tournaments.teams &&
-    //   tournaments.teams.find((team) => team.captain === loggedUser._id);
-    tournaments.forEach((tournament) => {
-      const deneme = tournament.teams.find(
-        (team) => team.captain === loggedUser._id
-      );
-      // console.log(deneme);
-      if (deneme !== undefined) {
-        setRegTeam({
-          name: deneme.name,
-          registered: true,
-          tournamentId: tournament._id,
-        });
-      }
-    });
   }, []);
 
   return (
@@ -95,13 +73,24 @@ const Tournaments = () => {
                     </Card.Title>
                     <RegisterModal
                       tournament={tournament}
-                      isRegistered={regTeam}
+                      // isRegistered={regTeam}
                     />
-                    {regTeam.tournamentId === tournament._id && (
-                      <p className='text-muted'>
-                        <span className='font-weight-bold'>{regTeam.name}</span>{' '}
-                        takımı zaten kayıtlı.
-                      </p>
+                    {registeredTournaments.map(
+                      (tournamentt) =>
+                        tournament._id === tournamentt.tournamentId && (
+                          <>
+                            <p
+                              className='text-muted'
+                              key={tournamentt.tournamentId}
+                            >
+                              <span className='font-weight-bold'>
+                                {tournamentt.teamName}
+                              </span>{' '}
+                              takımı kayıtlı
+                            </p>
+                            <Button variant='danger'>Kayıt Sil</Button>
+                          </>
+                        )
                     )}
                   </Card.Body>
                 </Card>

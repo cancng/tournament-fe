@@ -8,6 +8,7 @@ const tournamentModel = {
   loading: false,
   errors: [],
   selectedTournament: {},
+  registeredTournaments: [],
 
   // actions
   fetching: action((state) => {
@@ -25,6 +26,21 @@ const tournamentModel = {
   setTournament: action((state, payload) => {
     state.selectedTournament = payload;
   }),
+  setRegisteredTournaments: action((state, payload) => {
+    state.registeredTournaments = payload;
+  }),
+  fetchRegisteredTournaments: thunk(async (actions, payload) => {
+    try {
+      const result = await api.get('/profile/registrations');
+      actions.setRegisteredTournaments(result.data);
+    } catch (e) {
+      const errors = e.response.data.errors;
+      if (errors) {
+        actions.setErrors(errors);
+        actions.fetchingDone();
+      }
+    }
+  }),
   fetchTournament: thunk(async (actions, payload) => {
     actions.fetching();
     try {
@@ -39,11 +55,12 @@ const tournamentModel = {
       }
     }
   }),
-  fetchAllTournaments: thunk(async (actions) => {
+  fetchAllTournaments: thunk(async (actions, payload) => {
     actions.fetching();
     try {
       const result = await api.get('/tournament/list');
       actions.addItems(result.data);
+      actions.fetchRegisteredTournaments(payload);
       actions.fetchingDone();
     } catch (e) {
       const errors = e.response.data.errors;
