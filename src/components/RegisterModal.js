@@ -58,7 +58,7 @@ const RegisterModal = ({ tournament }) => {
           disabled={checker(tournament._id)}
           onClick={handleShow}
         >
-          Takımını Kaydet 
+          Takımını Kaydet
         </Button>
       )}
 
