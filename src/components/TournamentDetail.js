@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { Row, Col, Spinner, Table, Button } from 'react-bootstrap';
+import { Row, Col, Spinner, Table } from 'react-bootstrap';
 import Moment from 'react-moment';
 import moment from 'moment';
+import ParticipantsModal from './ParticipantsModal';
 
 const TournamentDetail = () => {
   const params = useParams();
-  console.log(params);
 
   // Redux Store States
   const selectedTournament = useStoreState(
@@ -59,11 +59,9 @@ const TournamentDetail = () => {
                     )}
                   </td>
                   <td>
-                    <Button size='sm' variant='warning'>
-                      {selectedTournament.teams &&
-                        selectedTournament.teams.length}{' '}
-                      takım
-                    </Button>
+                    <ParticipantsModal
+                      selectedTournament={selectedTournament}
+                    />
                   </td>
                 </tr>
               </tbody>

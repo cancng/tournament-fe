@@ -72,9 +72,6 @@ const Login = () => {
               minLength='6'
             />
           </Form.Group>
-          {/*<Form.Group controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-          </Form.Group>*/}
           <Button variant='primary' type='submit'>
             {isLoading ? (
               <Spinner
@@ -88,10 +85,6 @@ const Login = () => {
               'Gönder'
             )}
           </Button>
-
-          {/*<Link to='/register' className='btn btn-secondary float-right'>
-            Kayıt Ol
-          </Link>*/}
         </Form>
         <p className='my-1'>
           Üyeliğiniz yok mu? <Link to='/register'>Kayıt olun</Link>

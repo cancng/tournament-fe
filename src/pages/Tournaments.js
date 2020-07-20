@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { Alert, Button, Card, Col, Row, Spinner } from 'react-bootstrap';
+import { Alert, Card, Col, Row, Spinner } from 'react-bootstrap';
 import Moment from 'react-moment';
 import moment from 'moment';
 import RegisterModal from '../components/RegisterModal';
+import LeaveModal from '../components/LeaveModal';
 
 const Tournaments = () => {
   // Redux store states
@@ -21,9 +22,6 @@ const Tournaments = () => {
     (actions) => actions.tournament.fetchAllTournaments
   );
   const setError = useStoreActions((actions) => actions.tournament.setErrors);
-  const leaveTournament = useStoreActions(
-    (actions) => actions.tournament.leaveTournament
-  );
 
   //
   useEffect(() => {
@@ -47,7 +45,7 @@ const Tournaments = () => {
         </Row>
       ) : tournaments.length === 0 ? (
         <Alert variant='danger' className='text-dark'>
-          Kayıtlarda hiçbir turnuva yok 😥
+          Kayıtlarda hiçbir turnuva yok <span role="img" aria-label="sad">😥</span>
         </Alert>
       ) : (
         <>
@@ -55,7 +53,11 @@ const Tournaments = () => {
             <Col xs={12}>
               {errors &&
                 errors.map((error) => (
-                  <Alert variant='danger' className='text-dark text-center'>
+                  <Alert
+                    variant='danger'
+                    className='text-dark text-center'
+                    key={error.msg}
+                  >
                     {error.msg}
                   </Alert>
                 ))}
@@ -84,33 +86,21 @@ const Tournaments = () => {
                       tournament={tournament}
                       // isRegistered={regTeam}
                     />
-                    {registeredTournaments.map(
-                      (tournamentt) =>
-                        tournament._id === tournamentt.tournamentId && (
-                          <>
-                            <p
-                              className='text-muted'
-                              key={tournamentt.tournamentId}
-                            >
-                              <span className='font-weight-bold'>
-                                {tournamentt.teamName}
-                              </span>{' '}
-                              takımı kayıtlı
-                            </p>
-                            <Button
-                              variant='danger'
-                              onClick={() => {
-                                leaveTournament({
-                                  tournamentId: tournamentt.tournamentId,
-                                  teamId: tournamentt.teamId,
-                                });
-                              }}
-                            >
-                              Kayıt Sil
-                            </Button>
-                          </>
-                        )
-                    )}
+                    {tournament.isActive &&
+                      registeredTournaments.map(
+                        (tournamentt) =>
+                          tournament._id === tournamentt.tournamentId && (
+                            <React.Fragment key={tournamentt.tournamentId}>
+                              <p
+                                className='text-muted'
+                                style={{ marginBottom: '3px' }}
+                              >
+                                Zaten kayıtlı
+                              </p>
+                              <LeaveModal tournamentt={tournamentt} />
+                            </React.Fragment>
+                          )
+                      )}
                   </Card.Body>
                 </Card>
               </Col>

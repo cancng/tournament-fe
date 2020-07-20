@@ -52,7 +52,7 @@ const AdminTournaments = () => {
       ) : tournaments.length === 0 ? (
         <Row className='justify-content-center'>
           <Alert variant='danger' className='text-dark'>
-            Kayıtlarda hiçbir turnuva yok 😥 Yeni bir turnuva oluşturabilirsin.
+            Kayıtlarda hiçbir turnuva yok <span role="img" aria-label="sad">😥</span> Yeni bir turnuva oluşturabilirsin.
           </Alert>
         </Row>
       ) : (

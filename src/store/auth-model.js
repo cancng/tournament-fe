@@ -9,6 +9,7 @@ const authModel = {
   loading: false,
   user: null,
   errors: [],
+  responseMsg: '',
 
   // actions
   fetching: action((state) => {
@@ -19,6 +20,9 @@ const authModel = {
   }),
   setErrors: action((state, payload) => {
     state.errors = payload;
+  }),
+  setResponseMsg: action((state, payload) => {
+    state.responseMsg = payload;
   }),
   setAuthError: action((state) => {
     state.token = null;
@@ -58,7 +62,6 @@ const authModel = {
         actions.setErrors(errors);
         actions.fetchingDone();
       }
-      // console.log('hata', e);
     }
   }),
   registerUser: thunk(async (actions, payload) => {
@@ -66,12 +69,34 @@ const authModel = {
     const body = { name, email, password };
     actions.fetching();
     try {
-      const res = await api.post('/users',body);
+      const res = await api.post('/users', body);
       actions.loginSuccess(res.data);
       actions.loadUser();
       actions.fetchingDone();
       actions.setErrors([]);
     } catch (e) {
+      const errors = e.response.data.errors;
+      if (errors) {
+        actions.setErrors(errors);
+        actions.fetchingDone();
+      }
+    }
+  }),
+  changePassword: thunk(async (actions, payload) => {
+    const { password, new_password } = payload;
+    const body = { password, new_password };
+    // return;
+    actions.fetching();
+    try {
+      const res = await api.post('/auth/changepassword', body);
+      console.log(res.data);
+      actions.fetchingDone();
+      actions.setResponseMsg(res.data.msg);
+      actions.setErrors([]);
+      actions.setAuthError();
+      payload.push('/login');
+    } catch (e) {
+      console.log(e);
       const errors = e.response.data.errors;
       if (errors) {
         actions.setErrors(errors);

@@ -65,7 +65,9 @@ const tournamentModel = {
       const result = await api.get('/tournament/list');
       actions.addItems(result.data);
       actions.fetchRegisteredTournaments(payload);
-      // actions.setCustomError({ type: '', msg: '' });
+      setTimeout(() => {
+        actions.setCustomError({ type: '', msg: '' });
+      }, 7500);
       actions.fetchingDone();
     } catch (e) {
       const errors = e.response.data.errors;
