@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Col, Nav, Navbar, Row } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import tournament from '../tournament.png';
 
@@ -66,13 +66,15 @@ const AppNav = () => {
   return (
     <Navbar bg='dark' expand='lg' variant='dark' className='mb-3'>
       <Navbar.Brand>
-        <img
-          src={tournament}
-          width='30'
-          height='30'
-          className='d-inline-block align-top'
-          alt='React Bootstrap logo'
-        />
+        <Link to='/'>
+          <img
+            src={tournament}
+            width='30'
+            height='30'
+            className='d-inline-block align-top'
+            alt='Tournament'
+          />
+        </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls='basic-navbar-nav' />
       <Navbar.Collapse id='basic-navbar-nav'>

@@ -1,4 +1,5 @@
 import React from 'react';
+import banner from '../banner.png';
 import { Col, Row } from 'react-bootstrap';
 
 const Landing = () => {
@@ -6,7 +7,8 @@ const Landing = () => {
     <>
       <Row className='mb-5'>
         <Col>
-          <p className='lead display-4 text-center'>Turnuva Kayıt Sistemi</p>
+          <img src={banner} alt='landing banner' style={{ width: '100%' }} />
+          {/*<p className='lead display-4 text-center'>Turnuva Kayıt Sistemi</p>*/}
         </Col>
       </Row>
 

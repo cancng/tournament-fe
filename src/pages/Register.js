@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Alert, Button, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Link, Redirect } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Register = () => {
   const [inputs, setInputs] = useState({
@@ -11,6 +12,7 @@ const Register = () => {
     password2: '',
   });
   const [error, setError] = useState('');
+  const [token, setToken] = useState(null);
   const [inputClass, setInputClass] = useState('');
 
   // redux store states
@@ -46,6 +48,7 @@ const Register = () => {
         name: inputs.name,
         email: inputs.email,
         password: inputs.password,
+        captcha: token,
       });
       setInputClass('');
     } else setError('Formdaki alanları doldurunuz.');
@@ -121,6 +124,12 @@ const Register = () => {
           {/*<Form.Group controlId="formBasicCheckbox">
             <Form.Check type="checkbox" label="Check me out" />
           </Form.Group>*/}
+          <Form.Group>
+            <ReCAPTCHA
+              sitekey='6LcrQbQZAAAAAAp_c-tvX77NXuLHxlBIh5pAixnP'
+              onChange={(e) => setToken(e)}
+            />
+          </Form.Group>
           <Button variant='primary' type='submit'>
             {isLoading ? (
               <Spinner

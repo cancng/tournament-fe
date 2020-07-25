@@ -75,6 +75,9 @@ const Profile = () => {
   useEffect(() => {
     setCustomError({ msg: successMsg, type: 'success' });
   }, [successMsg]);
+  useEffect(() => {
+    setCustomError({ msg: '', type: '' });
+  }, []);
 
   return (
     <>
@@ -90,14 +93,21 @@ const Profile = () => {
             />
             <Media.Body>
               <h5>Hoşgeldiniz, {user && user.name}</h5>
-              <ul>
-                <li>Adınız: {user && user.name}</li>
-                <li>E-posta: {user && user.email}</li>
-                <li>
+              <ul style={{ paddingLeft: 0 }}>
+                <li style={{ listStyleType: 'none' }}>
+                  Adınız: {user && user.name}
+                </li>
+                <li style={{ listStyleType: 'none' }}>
+                  E-posta: {user && user.email}
+                </li>
+                <li style={{ listStyleType: 'none' }}>
                   Kayıt Tarihiniz:{' '}
                   <Moment format='DD/MM/YYYY'>
                     {moment.utc(user && user.date)}
                   </Moment>
+                </li>
+                <li style={{ listStyleType: 'none' }}>
+                  Avatarını güncellemek için Gravatar.com adresine gitmelisin.
                 </li>
               </ul>
             </Media.Body>

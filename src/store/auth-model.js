@@ -47,8 +47,8 @@ const authModel = {
     state.isAuthenticated = true;
   }),
   loginUser: thunk(async (actions, payload) => {
-    const { email, password } = payload;
-    const body = { email, password };
+    const { email, password, captcha } = payload;
+    const body = { email, password, captcha };
     actions.fetching();
     try {
       const res = await api.post('/auth', body);
@@ -57,6 +57,8 @@ const authModel = {
       actions.fetchingDone();
       actions.setErrors([]);
     } catch (e) {
+      /*console.log(e.response);
+      return*/
       const errors = e.response.data.errors;
       if (errors) {
         actions.setErrors(errors);
@@ -65,8 +67,8 @@ const authModel = {
     }
   }),
   registerUser: thunk(async (actions, payload) => {
-    const { name, email, password } = payload;
-    const body = { name, email, password };
+    const { name, email, password, captcha } = payload;
+    const body = { name, email, password, captcha };
     actions.fetching();
     try {
       const res = await api.post('/users', body);

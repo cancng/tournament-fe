@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Alert, Button, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Link, Redirect } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Login = () => {
   const [inputs, setInputs] = useState({ email: '', password: '' });
+  const [token, setToken] = useState(null);
   const [error, setError] = useState('');
 
   // redux store states
@@ -24,12 +26,14 @@ const Login = () => {
     e.preventDefault();
     if (inputs.email !== '' && inputs.password !== '') {
       setError('');
-      submitLogin(inputs);
+      submitLogin({ ...inputs, captcha: token });
     } else setError('Formdaki alanları doldurunuz.');
   };
+
   if (isAuthenticated) {
     return <Redirect to='/' />;
   }
+
   return (
     <Row>
       <Col md={{ span: 6, offset: 3 }}>
@@ -70,6 +74,12 @@ const Login = () => {
               value={inputs.password}
               onChange={onChange}
               minLength='6'
+            />
+          </Form.Group>
+          <Form.Group>
+            <ReCAPTCHA
+              sitekey='6LcrQbQZAAAAAAp_c-tvX77NXuLHxlBIh5pAixnP'
+              onChange={(e) => setToken(e)}
             />
           </Form.Group>
           <Button variant='primary' type='submit'>

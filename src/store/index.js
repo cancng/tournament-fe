@@ -10,6 +10,7 @@ const store = createStore(
   },
   {
     name: 'Tournament Registration Store',
+    devTools: true, // TODO: it will be false in production
   }
 );
 let currentState = store.getState();
