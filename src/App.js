@@ -20,6 +20,8 @@ import AdminTournaments from './components/AdminTournaments';
 import Profile from './components/Profile';
 import NewTournament from './components/NewTournament';
 import TournamentDetail from './components/TournamentDetail';
+import Users from './pages/Users';
+import About from './pages/About';
 
 const App = () => {
   // const loadUser = useStoreActions((actions) => actions.auth.loadUser);
@@ -36,6 +38,7 @@ const App = () => {
             <Route exact path='/' component={Landing} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/register' component={Register} />
+            <Route exact path='/about' component={About} />
             <PrivateRoute exact path='/tournaments' component={Tournaments} />
             <PrivateRoute exact path='/profile' component={Profile} />
             <AdminRoute exact path='/admin' component={AdminTournaments} />
@@ -49,6 +52,7 @@ const App = () => {
               path='/tournamentdetail/:tournamentId'
               component={TournamentDetail}
             />
+            <AdminRoute exact path='/users' component={Users} />
             <Route component={NotFound} />
           </Switch>
         </Container>

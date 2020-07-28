@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal, Form, InputGroup } from 'react-bootstrap';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
@@ -19,13 +19,21 @@ const RegisterModal = ({ tournament }) => {
   const registerTournament = useStoreActions(
     (actions) => actions.tournament.joinTournament
   );
-  // const setError = useStoreActions((actions) => actions.tournament.setErrors);
 
   //
   const checker = (tournamentId) => {
-   const found= registeredTournaments.find(trnmt => trnmt.tournamentId === tournament._id)
+    const found = registeredTournaments.find(
+      (trnmt) => trnmt.tournamentId === tournament._id
+    );
     return !!found;
-  }
+  };
+
+  const playerRegistrar = (playersString) => {
+    let splittedPlayers = playersString.split(',', 10);
+    return splittedPlayers
+      .filter((player) => player.length > 1)
+      .map((player) => player.trim());
+  };
 
   const handleChange = (e) => {
     setInputs({
@@ -41,15 +49,11 @@ const RegisterModal = ({ tournament }) => {
       team_players: inputs.team_players,
     });
   };
-  // console.log(isRegistered);
 
   return (
     <>
       {!tournament.isActive ? (
-        <Button
-          variant='danger'
-          disabled={true}
-        >
+        <Button variant='danger' disabled={true}>
           Turnuva Aktif Değil
         </Button>
       ) : (
@@ -88,6 +92,17 @@ const RegisterModal = ({ tournament }) => {
                 value={inputs.team_players}
                 onChange={handleChange}
               />
+              <p style={{ marginBottom: 0 }} className='text-muted'>
+                Takımınızdaki oyuncuları virgül ile ayırarak yazınız. Yedek
+                kayıt edebilirsiniz. En fazla 10 oyuncu adı sisteme kayıt
+                edilecektir.
+              </p>
+              <div>
+                Kayıt edilecek oyuncular:
+                <p style={{ color: 'red' }}>
+                  {playerRegistrar(inputs.team_players).join(' | ')}
+                </p>
+              </div>
             </InputGroup>
             <Button
               variant='primary'

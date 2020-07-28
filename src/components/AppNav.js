@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Nav, Navbar, Row } from 'react-bootstrap';
+import { Button, Col, Dropdown, Nav, Navbar, Row } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import tournament from '../tournament.png';
@@ -21,26 +21,57 @@ const AppNav = () => {
         <NavLink to='/tournaments' className='nav-link'>
           Turnuvalar
         </NavLink>
+        <NavLink to='/about' className='nav-link'>
+          Hakkımızda
+        </NavLink>
+        <a className='nav-link' target='_blank' href='https://bit.ly/dcturnuva'>
+          Discord
+        </a>
       </Nav>
       <Nav>
         <Row>
           <Col>
-            {user && user.isAdmin === '1' && (
-              <NavLink to='/admin' className='btn btn-danger btn-sm'>
-                <i className='fas fa-user-cog' /> Yönetici
+            <Row className='mr-1'>
+              {user && user.isAdmin === '1' && (
+                <>
+                  {/*<NavLink to='/admin' className='btn btn-danger btn-sm'>
+                  <i className='fas fa-user-cog' /> Yönetici
+                </NavLink>*/}
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      variant='success'
+                      id='dropdown-basic'
+                      size='sm'
+                    >
+                      Yönetici
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item as='button'>
+                        <NavLink to='/admin'>Turnuvalar</NavLink>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                        <NavLink to='/users'>Kullanıcılar</NavLink>
+                      </Dropdown.Item>
+                      {/*<Dropdown.Item>
+                        Something else
+                      </Dropdown.Item>*/}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </>
+              )}
+              <NavLink to='/profile' className='btn btn-warning btn-sm ml-2'>
+                <i className='fas fa-user text-dark' /> Profilim
               </NavLink>
-            )}
-            <NavLink to='/profile' className='btn btn-warning btn-sm ml-2'>
-              <i className='fas fa-user text-dark' /> Profilim
-            </NavLink>
-            <Button
-              onClick={logout}
-              variant='danger'
-              size='sm'
-              className='ml-2'
-            >
-              Çıkış Yap
-            </Button>
+              <Button
+                onClick={logout}
+                variant='danger'
+                size='sm'
+                className='ml-2'
+              >
+                Çıkış Yap
+              </Button>
+            </Row>
           </Col>
         </Row>
       </Nav>
@@ -52,13 +83,19 @@ const AppNav = () => {
         <NavLink to='/' className='nav-link' exact>
           Anasayfa
         </NavLink>
-        {/*<NavLink to='/' className='nav-link' disabled>
+        <NavLink to='/' className='nav-link text-muted'>
           Turnuvalar
-        </NavLink>*/}
+        </NavLink>
+        <NavLink to='/about' className='nav-link'>
+          Hakkımızda
+        </NavLink>
+        <a className='nav-link' target='_blank' href='https://bit.ly/dcturnuva'>
+          Discord
+        </a>
       </Nav>
       <Nav>
         <NavLink to='/login' className='btn btn-primary btn-sm'>
-          <i className='fas fa-key' /> Giriş Yap
+          <i className='fas fa-key' /> Giriş/Kayıt
         </NavLink>
       </Nav>
     </>

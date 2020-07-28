@@ -6,3 +6,7 @@ footer.footer {
   padding-top: 4rem;
   padding-bottom: 4rem;
 }
+a {
+ /* color: inherit;
+  text-decoration: inherit;*/
+}

@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import { Badge, Button, Modal, Table } from 'react-bootstrap';
+import { useStoreActions } from 'easy-peasy';
 
 const ParticipantsModal = ({ selectedTournament }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const kickTeam = useStoreActions((actions) => actions.tournament.kickTeam);
+  const onKick = (e, teamId) => {
+    e.preventDefault();
+    kickTeam({
+      tournamentId: selectedTournament._id,
+      teamId,
+    });
+  };
   return (
     <>
       <Button variant='primary' onClick={handleShow} size='sm'>
@@ -16,7 +25,7 @@ const ParticipantsModal = ({ selectedTournament }) => {
         <span className='sr-only'>takım</span>
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} size='lg'>
         <Modal.Header closeButton>
           <Modal.Title>Kayıtlı Takımlar</Modal.Title>
         </Modal.Header>
@@ -26,6 +35,8 @@ const ParticipantsModal = ({ selectedTournament }) => {
               <tr>
                 <th>Takım Kaptan ID</th>
                 <th>Takım Adı</th>
+                <th>Oyuncular</th>
+                <th>Takımı At</th>
               </tr>
             </thead>
             <tbody>
@@ -36,6 +47,16 @@ const ParticipantsModal = ({ selectedTournament }) => {
                       <Badge variant='info'> {team.captain}</Badge>
                     </td>
                     <td>{team.name}</td>
+                    <td>{team.players.join(', ')}</td>
+                    <td>
+                      <Button
+                        variant='danger'
+                        size='sm'
+                        onClick={(e) => onKick(e, team.teamId)}
+                      >
+                        <i className='fas fa-ban' />
+                      </Button>
+                    </td>
                   </tr>
                 ))}
             </tbody>

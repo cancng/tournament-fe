@@ -161,6 +161,26 @@ const tournamentModel = {
       }
     }
   }),
+  kickTeam: thunk(async (actions, payload) => {
+    actions.fetching();
+    try {
+      const { tournamentId, teamId } = payload;
+      await api.delete(`/tournament/kick_team/${tournamentId}/${teamId}`);
+      // push('/admin');
+      actions.fetchTournament(tournamentId);
+      actions.setCustomError({
+        msg: 'Seçili takım turnuvadan atıldı!',
+        type: 'success',
+      });
+      actions.fetchingDone();
+    } catch (e) {
+      const errors = e.response.data.errors;
+      if (errors) {
+        actions.setErrors(errors);
+        actions.fetchingDone();
+      }
+    }
+  }),
 };
 
 export default tournamentModel;

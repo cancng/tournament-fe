@@ -2,11 +2,13 @@ import { createStore } from 'easy-peasy';
 import tournamentModel from './tournament-model';
 import authModel from './auth-model';
 import setAuthToken from '../utils/setAuthToken';
+import userModel from './user-model';
 
 const store = createStore(
   {
     tournament: tournamentModel,
     auth: authModel,
+    user: userModel,
   },
   {
     name: 'Tournament Registration Store',

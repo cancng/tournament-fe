@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Table, Form, Spinner, Row, Alert, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import DeleteModal from './DeleteModal';
+import DeleteTournamentModal from './DeleteTournamentModal';
 
 const AdminTournaments = () => {
   // Redux store states
@@ -95,7 +95,7 @@ const AdminTournaments = () => {
                       />
                     </td>
                     <td>
-                      <DeleteModal tournament={tournament} />
+                      <DeleteTournamentModal tournament={tournament} />
                     </td>
                   </tr>
                 ))}
