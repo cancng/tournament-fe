@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, Form, InputGroup } from 'react-bootstrap';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 

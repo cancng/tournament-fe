@@ -15,7 +15,11 @@ const About = () => {
             kaydetmeleriniz için yapılmıştır. Sisteme giriş yaparak aktif
             turnuvaları görebilir, kayıt yapabilir veya kayıt yaptığınız
             turnuvadan çekilebilirsiniz. Sorularınız için{' '}
-            <a href='https://bit.ly/dcturnuva' target='_blank'>
+            <a
+              href='https://bit.ly/dcturnuva'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
               Discord kanalımıza
             </a>{' '}
             gelebilirsiniz.
@@ -23,7 +27,11 @@ const About = () => {
           <p>
             Eğer bu sistemi kendi sayfanızda kullanmak isterseniz de iletişime
             geçebilirsiniz. Detaylı iletişim için{' '}
-            <a href='https://bit.ly/dcturnuva' target='_blank'>
+            <a
+              href='https://bit.ly/dcturnuva'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
               Discord kanalımıza
             </a>{' '}
             veya <code>admin@lolyama.com</code> e-posta adresinden iletişime

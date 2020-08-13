@@ -1,14 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import banner from '../banner.png';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Table, Spinner } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { useStoreState, useStoreActions } from 'easy-peasy';
+import Moment from 'react-moment';
+import moment from 'moment';
+import api from '../utils/api';
+
 
 const Landing = () => {
+  // Redux store states
+  const tournaments = useStoreState((state) => state.tournament.tournaments);
+  const loading = useStoreState((state) => state.tournament.loading);
+  const isLogged = useStoreState((state) => state.auth.isAuthenticated);
+
+  // Redux store actions
+  const fetchAll = useStoreActions(
+    (actions) => actions.tournament.fetchAllTournaments
+  );
+  // const setError = useStoreActions((actions) => actions.tournament.setErrors);
+
+  useEffect(() => {
+    fetchAll();
+  }, []);
+
   return (
     <>
       <Row className='mb-5'>
         <Col>
           <img src={banner} alt='landing banner' style={{ width: '100%' }} />
-          {/*<p className='lead display-4 text-center'>Turnuva Kayıt Sistemi</p>*/}
         </Col>
       </Row>
 
@@ -39,38 +59,58 @@ const Landing = () => {
           </p>
         </Col>
       </Row>
-      {/*Footer*/}
-      <footer className='footer bg-light'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-lg-6 h-100 text-center text-lg-left my-auto'>
-              <p className='text-muted small mb-4 mb-lg-0'>
-                &copy; Turnuva Kayıt {new Date().getUTCFullYear()}. Tüm hakları
-                saklıdır.
-              </p>
-            </div>
-            <div className='col-lg-6 h-100 text-center text-lg-right my-auto'>
-              <ul className='list-inline mb-0'>
-                <li className='list-inline-item mr-3'>
-                  <a href='https://www.facebook.com/lolyamacom'>
-                    <i className='fab fa-facebook fa-2x fa-fw' />
-                  </a>
-                </li>
-                <li className='list-inline-item mr-3'>
-                  <a href='https://discord.gg/sRFAtjv'>
-                    <i className='fab fa-discord fa-2x fa-fw' />
-                  </a>
-                </li>
-                <li className='list-inline-item'>
-                  <a href='https://www.instagram.com/lol.yama/'>
-                    <i className='fab fa-instagram fa-2x fa-fw' />
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <hr />
+      <Row>
+        <Col md={{ span: 6, offset: 3 }} xs={12}>
+          <h2>Aktif Turnuva Listesi</h2>
+          <p>Sisteme kayıt olarak turnuvalara katılabilirsiniz. </p>
+          {/* <Spinner animation='border' variant='secondary' /> */}
+          {loading ? (
+            <Spinner
+              animation='border'
+              variant='secondary'
+              className='m-auto d-block'
+            />
+          ) : (
+            <Table size='sm'>
+              <thead>
+                <tr>
+                  <th>Turnuva Adı</th>
+                  <th>Turnuva Tarihi</th>
+                  <th>Aktiflik</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {tournaments.map((tournament) => (
+                  <tr key={tournament._id}>
+                    <td>{tournament.name}</td>
+                    <td>
+                      <Moment format='DD/MM/YYYY'>
+                        {moment.utc(tournament.eventDate)}
+                      </Moment>
+                    </td>
+                    <td>
+                      <Spinner
+                        animation='grow'
+                        variant={tournament.isActive ? 'success' : 'dark'}
+                      />
+                    </td>
+                    <td>
+                      <Link
+                        to={isLogged ? '/tournaments' : '/login'}
+                        className='btn btn-primary btn-sm'
+                      >
+                        {isLogged ? 'Kayıt Ol' : 'Giriş Yap'}
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </Col>
+      </Row>
     </>
   );
 };

@@ -22,9 +22,9 @@ import NewTournament from './components/NewTournament';
 import TournamentDetail from './components/TournamentDetail';
 import Users from './pages/Users';
 import About from './pages/About';
+import Footer from './components/Footer';
 
 const App = () => {
-  // const loadUser = useStoreActions((actions) => actions.auth.loadUser);
   useEffect(() => {
     setAuthToken(localStorage.token);
     store.getActions().auth.loadUser();
@@ -56,6 +56,7 @@ const App = () => {
             <Route component={NotFound} />
           </Switch>
         </Container>
+        <Footer />
       </Router>
     </StoreProvider>
   );

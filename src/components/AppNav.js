@@ -24,7 +24,12 @@ const AppNav = () => {
         <NavLink to='/about' className='nav-link'>
           Hakkımızda
         </NavLink>
-        <a className='nav-link' target='_blank' href='https://bit.ly/dcturnuva'>
+        <a
+          className='nav-link'
+          target='_blank'
+          rel='noopener noreferrer'
+          href='https://bit.ly/dcturnuva'
+        >
           Discord
         </a>
       </Nav>
@@ -89,7 +94,12 @@ const AppNav = () => {
         <NavLink to='/about' className='nav-link'>
           Hakkımızda
         </NavLink>
-        <a className='nav-link' target='_blank' href='https://bit.ly/dcturnuva'>
+        <a
+          className='nav-link'
+          target='_blank'
+          rel='noopener noreferrer'
+          href='https://bit.ly/dcturnuva'
+        >
           Discord
         </a>
       </Nav>
