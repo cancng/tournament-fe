@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Button, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Link, Redirect } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
+import swal from 'sweetalert';
 
 const Login = () => {
   const [inputs, setInputs] = useState({ email: '', password: '' });
@@ -13,9 +14,11 @@ const Login = () => {
   const errors = useStoreState((state) => state.auth.errors);
   const isLoading = useStoreState((state) => state.auth.loading);
   const isAuthenticated = useStoreState((state) => state.auth.isAuthenticated);
+  const swalMsg = useStoreState((state) => state.auth.swalMsg);
 
   //redux store actions
   const submitLogin = useStoreActions((actions) => actions.auth.loginUser);
+  const setSwalMsg = useStoreActions((actions) => actions.auth.setSwalMsg);
   const onChange = (e) => {
     setInputs({
       ...inputs,
@@ -29,6 +32,13 @@ const Login = () => {
       submitLogin({ ...inputs, captcha: token });
     } else setError('Formdaki alanları doldurunuz.');
   };
+
+  useEffect(() => {
+    if (swalMsg.msg)
+      swal('', swalMsg.msg, swalMsg.type).then((r) => {
+        setSwalMsg({ head: null, msg: null, type: null });
+      });
+  }, [swalMsg]);
 
   if (isAuthenticated) {
     return <Redirect to='/' />;

@@ -19,6 +19,7 @@ const Register = () => {
   const errors = useStoreState((state) => state.auth.errors);
   const isLoading = useStoreState((state) => state.auth.loading);
   const isAuthenticated = useStoreState((state) => state.auth.isAuthenticated);
+  const responseMsg = useStoreState((state) => state.auth.responseMsg);
 
   //redux store actions
   const submitRegister = useStoreActions(
@@ -72,6 +73,7 @@ const Register = () => {
             {error}
           </Alert>
         )}
+        {responseMsg && <Alert variant='success'>{responseMsg}</Alert>}
         <Form onSubmit={formOnSubmit}>
           <Form.Group>
             <Form.Label>İsminiz</Form.Label>
@@ -93,7 +95,8 @@ const Register = () => {
               onChange={onChange}
             />
             <Form.Text className='text-muted'>
-              Girişte kullanacağınız e-posta adresiniz
+              Girişte kullanacağınız e-posta adresiniz. Onay için
+              kullanılacaktır.
             </Form.Text>
           </Form.Group>
 

@@ -10,6 +10,7 @@ const authModel = {
   user: null,
   errors: [],
   responseMsg: '',
+  swalMsg: { head: null, msg: null, type: null },
 
   // actions
   fetching: action((state) => {
@@ -23,6 +24,9 @@ const authModel = {
   }),
   setResponseMsg: action((state, payload) => {
     state.responseMsg = payload;
+  }),
+  setSwalMsg: action((state, payload) => {
+    state.swalMsg = payload;
   }),
   setAuthError: action((state) => {
     state.token = null;
@@ -57,8 +61,6 @@ const authModel = {
       actions.fetchingDone();
       actions.setErrors([]);
     } catch (e) {
-      /*console.log(e.response);
-      return*/
       const errors = e.response.data.errors;
       if (errors) {
         actions.setErrors(errors);
@@ -72,8 +74,7 @@ const authModel = {
     actions.fetching();
     try {
       const res = await api.post('/users', body);
-      actions.loginSuccess(res.data);
-      actions.loadUser();
+      actions.setResponseMsg(res.data.msg);
       actions.fetchingDone();
       actions.setErrors([]);
     } catch (e) {
@@ -104,6 +105,24 @@ const authModel = {
         actions.setErrors(errors);
         actions.fetchingDone();
       }
+    }
+  }),
+  activateAccount: thunk(async (actions, payload) => {
+    try {
+      const res = await api.get(`/auth/activate/${payload.userToken}`);
+      const resMsg = res.data.msg;
+      if (resMsg === 'Üyeliğiniz aktifleştirildi, giriş yapabilirsiniz') {
+        // console.log(resMsg);
+        actions.setSwalMsg({ head: 'OK!!', msg: resMsg, type: 'success' });
+        payload.push('/login');
+      }
+    } catch (e) {
+      actions.setSwalMsg({
+        head: 'Hata!!',
+        msg: 'Bir hata oluştu',
+        type: 'error',
+      });
+      payload.push('/login');
     }
   }),
 };

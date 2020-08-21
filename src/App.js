@@ -23,6 +23,7 @@ import TournamentDetail from './components/TournamentDetail';
 import Users from './pages/Users';
 import About from './pages/About';
 import Footer from './components/Footer';
+import ActivateAccount from './components/ActivateAccount';
 
 const App = () => {
   useEffect(() => {
@@ -39,6 +40,11 @@ const App = () => {
             <Route exact path='/login' component={Login} />
             <Route exact path='/register' component={Register} />
             <Route exact path='/about' component={About} />
+            <Route
+              exact
+              path='/activate/:userToken'
+              component={ActivateAccount}
+            />
             <PrivateRoute exact path='/tournaments' component={Tournaments} />
             <PrivateRoute exact path='/profile' component={Profile} />
             <AdminRoute exact path='/admin' component={AdminTournaments} />

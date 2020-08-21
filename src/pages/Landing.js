@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import Moment from 'react-moment';
 import moment from 'moment';
-import api from '../utils/api';
 
 
 const Landing = () => {
